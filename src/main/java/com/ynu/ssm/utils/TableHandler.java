@@ -1,4 +1,4 @@
-package test;
+package com.ynu.ssm.utils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
@@ -18,8 +18,9 @@ import java.util.ArrayList;
 
  */
 public class TableHandler {
-    public static String dataFile = new TableHandler().getClass().getResource("/").getPath() + "savedrecs.txt";
-    public static String url = "http://webapi.fenqubiao.com/api/user/get?user=yunnandaxue&password=kjc000000";
+//    public static String dataFile = new TableHandler().getClass().getResource("/").getPath() + "savedrecs.txt";
+	public static String dataFile = "C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\paperFiles/savedrecs.txt";
+	public static String url = "http://webapi.fenqubiao.com/api/user/get?user=yunnandaxue&password=kjc000000";
     /**
      * 返回指定wos全部数据的分区，按行的顺序返回，其中含有0的列说明api返回值错误
      */
