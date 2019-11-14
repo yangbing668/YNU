@@ -3,11 +3,10 @@ package com.ynu.ssm.utils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
-import netscape.javascript.JSException;
-import netscape.javascript.JSObject;
 
 import java.io.*;
 import java.util.ArrayList;
+
 /**
 
  * @author litao
@@ -18,16 +17,18 @@ import java.util.ArrayList;
 
  */
 public class TableHandler {
-//    public static String dataFile = new TableHandler().getClass().getResource("/").getPath() + "savedrecs.txt";
-	public static String dataFile = "C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\paperFiles/savedrecs.txt";
-	public static String url = "http://webapi.fenqubiao.com/api/user/get?user=yunnandaxue&password=kjc000000";
+    public static String file_path = new TableHandler().getClass().getResource("/").getPath();
+    public static String file_name = "savedrecs.txt";
+    public static String handled_file_name = "savedrecs1.txt";
+    public static String url = "http://webapi.fenqubiao.com/api/user/get?user=yunnandaxue&password=kjc000000";
     /**
      * 返回指定wos全部数据的分区，按行的顺序返回，其中含有0的列说明api返回值错误
      */
-    public static ArrayList<String> getSections(String  dataFile){
+    public static ArrayList<String> getSections(String  dataFile,String handled_file){
         ArrayList<String> sections = new ArrayList<>();
         BufferedReader bReader = null;
         try {
+            WebPageResource t6 = new WebPageResource();
             bReader = new BufferedReader(
                     new FileReader(dataFile));
             String line;
@@ -37,7 +38,7 @@ public class TableHandler {
              */
             line = bReader.readLine();
             String colmNames[] = line.split("\t");
-            int ISSNIndex = 0, WCIndex = 0, PYIndex = 0;
+            int ISSNIndex = 0, WCIndex = 0, PYIndex = 0,SOIndex =0;
             for (int i = 0; i < colmNames.length; i++) {
                 if (colmNames[i].equals("SN")) {
                     ISSNIndex = i;
@@ -46,6 +47,8 @@ public class TableHandler {
                     WCIndex = i;
                 } else if (colmNames[i].equals("PY")) {
                     PYIndex = i;
+                } else if (colmNames[i].equals("SO")) {
+                    SOIndex = i;
                 }
             }
             while ((line = bReader.readLine()) != null) {
@@ -64,8 +67,16 @@ public class TableHandler {
 //
 //                }
                 String Year = datavalue[PYIndex];
-                WebPageResource t6 = new WebPageResource();
+
                 String htmls = t6.getPageSource(url + "&year=" + Year + "&keyword=" + ISSN_name, "utf-8");
+                if (htmls.equals("")){
+                    ISSN_name = datavalue[SOIndex];
+                    ISSN_name=ISSN_name.replace(" ","%20");
+//                    Thread.sleep(100);
+
+                    htmls = t6.getPageSource(url + "&year=" + Year + "&keyword=" + ISSN_name, "utf-8");
+
+                }
                 try {
 
                     JSONObject obj = new JSONObject(htmls);
@@ -91,16 +102,34 @@ public class TableHandler {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     sections.add("0");
+                    System.out.println(htmls);
                 }
 
             }
+            bReader = new BufferedReader(
+                    new FileReader(dataFile));
+            File file =new File(handled_file);
+            Writer out =new FileWriter(file);
+
+            int i = 1;
+            line = bReader.readLine();
+            String data=line.replace("\n","")+"\tjcr_section\n";
+            out.write(data);
+            while ((line = bReader.readLine()) != null) {
+                data=line.replace("\n","")+sections.get(i)+"\n";
+                out.write(data);
+                i++;
+            }
+            out.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
        return sections;
     }
     public static void main(String[] args) {
-        System.out.println(TableHandler.getSections(TableHandler.dataFile));
+        System.out.println(TableHandler.getSections(TableHandler.file_path + TableHandler.file_name,TableHandler.file_path + TableHandler.handled_file_name));
 
     }
 
