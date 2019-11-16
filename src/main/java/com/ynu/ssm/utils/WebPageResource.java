@@ -35,7 +35,7 @@ public class WebPageResource {
             }
             in.close();
         } catch (Exception ex) {
-            System.err.println(ex);
+//            System.err.println(ex);
         }
         return sb.toString();
     }
