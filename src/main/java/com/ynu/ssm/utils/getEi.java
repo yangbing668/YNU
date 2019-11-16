@@ -13,7 +13,7 @@ public class getEi {
 		System.out.println("start python");
         Process process;
         try {
-            process = Runtime.getRuntime().exec("python  C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\ei\\eiV2.py -d " + year); 
+            process = Runtime.getRuntime().exec("python  C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\ei\\ei.py -d " + year); 
             BufferedReader stdOut=new BufferedReader(new InputStreamReader(process.getInputStream()));
             String s;
             while((s=stdOut.readLine())!=null){
