@@ -174,7 +174,7 @@ def merge_csvs(path, date=2013, search_word='yunnan university'):
     # uid = uuid.uuid4()
     # output_file_name = str(uid)+'_'+str(date)+'_'+("".join(search_word.split()))+'.csv'
     output_file_name = str(date)+'_'+("".join(search_word.split()))+'.csv'
-    df1.to_csv(__file__+'ei_compress_files/'+output_file_name, index=False)
+    df1.to_csv(os.path.dirname(__file__)+'/ei_compress_files/'+output_file_name, index=False)
     print('文件已经保存:' + os.path.dirname(__file__) + '/ei_compress_files/' + output_file_name)
     return os.path.dirname(__file__) + '/ei_compress_files/' + output_file_name
 
