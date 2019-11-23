@@ -4,67 +4,75 @@
     border: 0;
 }
 body{
-	background: url(../img/云大大门.png);/* https://s2.ax1x.com/2019/10/29/K24td1.png */
 	background-repeat: no-repeat;
 	background-size: cover;
   	-webkit-background-size: cover;
  	-o-background-size: cover;
 }
 
-.Index-Header{
-    width:150px;
-    margin: 20px auto;
-    text-align: center;
-    background: silver;
-    height:auto;
-    text-decoration:none;
-}
 .Search{
-    width:1000px;
-    margin: 20px auto;
+    width:400px;
+    margin: 100px auto;
+    border:1px dashed #CCCCCC;
 }
 .Search form{
     margin:0px auto;
+    line-height: 2em;
     display: block;
-    width:600px;
+    width:700px;
 }
 .Search form input{
-    width:110px;
+    width:100px;
     height:30px;
     border: 1px solid #CCCCCC;
+    margin: 20px 30px 20px 30px;
 }
-.Search form .Find{
-    width:150px;
+.Search form select{
+	line-height: 2em;
+	height: 30px;
+	width:120px;
+	margin-bottom:20px ;
 }
-.Search form input .Startyear{
-    margin-right: 30px;
+.Search form .category{
+	border-style: solid;
+	border-width: 1px;
 }
-.Search form input .Endyear{
-    margin-left: 30px;
+.Search form .Startyear{
+	border-style: solid;
+	border-width: 1px;
+}
+.Search form .Endyear{
+	border-style: solid;
+	border-width: 1px;
+}
+.Search form .level{
+	border-style: solid;
+	border-width: 1px;
+}
+.Search form .author{
+	margin-left: 0px;
+	width: 120px;
+	margin-bottom: 0px;
+}
+.Search form .Find,.Search form .Download{
+    width:100px;
+    height: 40px;
+    margin-left: 55px;
+    
+    text-decoration: none;
+    background: #2f435e;
+    color: #f2f2f2;
+    font-size: 16px;
+    font-family: "微软雅黑";
+    font-weight: bold;
+    
 }
 .Count{
-    width:800px;
+    width:400px;
     margin: 20px auto;
     display: none;
-    height: 50px;
-}
-.Count p{
-    float: left;
-}
-.Result{
-    width:800px;
-    min-height: 200px;
+    min-height: 400px;
     height: auto;
-    overflow: hidden;
-    margin: 40px auto;
-    background-color: #ffffff;
-  	border: 1px solid black;
-  	filter:alpha(opacity=60);
-  	opacity:0.6;
-}
-.Result .Article{
-    width:800px;
-    height:50px;
-    line-height: 50px;
-    margin-left: 30px;
+    border:1px dashed #CCCCCC;
+    text-align: center;
 }
