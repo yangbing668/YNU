@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<!--namespace的值就是dao接口的完整路径，就这个demo而言namespace 就是userDao.java的完整路径-->
+
 <mapper namespace="com.ynu.ssm.dao.UserDao">
 	<resultMap id="BaseResultMap" type="com.ynu.ssm.pojo.User">
 		<id column="id" property="id" jdbcType="INTEGER" />

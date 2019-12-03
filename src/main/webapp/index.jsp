@@ -10,12 +10,12 @@
 </head>
 <body>
     <div class="Search">
-        <form>
+        <form action="showUser" method="post">
         选择类别：
-        	<select id = "category" class="category" onclick="choose()">
-        		<option>EI</option>
-        		<option>SCI</option>
-        		<option>CPCI</option>
+        	<select id = "id" class="category" name="id" onclick="choose()">
+        		<option value=1>EI</option>
+        		<option value=1>SCI</option>
+        		<option value=2>CPCI</option>
         	</select>
         	<br>
            选择年份：
@@ -60,7 +60,7 @@
             作者：
             <input type="text" class="author" name="author" required="required" />
             <br>
-            <input type="submit" value="查询" class="Find" id="Find" onclick="check()">
+            <input type="submit" value="查询" class="Find">
             <input type="button" value="下载" class="Download" id="Download" onclick="download()">
         </form>
     </div>
