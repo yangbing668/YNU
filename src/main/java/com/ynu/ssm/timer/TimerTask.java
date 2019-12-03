@@ -22,7 +22,7 @@ public class TimerTask {
         try {
             process = Runtime.getRuntime().exec("python " + pythonPath + " -d " + year);
             System.out.println("python " + pythonPath + " -d " + year);
-            BufferedReader stdOut=new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader stdOut=new BufferedReader(new InputStreamReader(process.getInputStream(),"GBK"));
             String s;
             while((s=stdOut.readLine())!=null){
                 System.out.println(s);
@@ -36,6 +36,23 @@ public class TimerTask {
         }
         return true;
 	}
+	
+	private static boolean get_SciOrCpci(String startyear,String endYear,String paperType) throws IOException, InterruptedException {
+		String[] arguments = new String[] {"python", "C:\\Users\\Barry\\Desktop\\a\\get_wos.py",startyear,endYear,paperType};
+	    try {
+	        Process process = Runtime.getRuntime().exec(arguments);
+	        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(),"GBK"));
+	        String line = null;
+	        while ((line = in.readLine()) != null) {  
+	            System.out.println(line);  
+	        }  
+	        in.close();
+	        int re = process.waitFor();  
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return true;
+	}
 
 
     public static int getSysYear() {
@@ -47,27 +64,38 @@ public class TimerTask {
      //                  秒分时日 月周
      //每周星期六执行一次
       @Scheduled(cron = "0 0 1 ? * 6")
-      public void test1() throws IOException, InterruptedException
+      public void updateEI() throws IOException, InterruptedException
       {
     	  int currentYear = getSysYear();
-          System.out.println("开始更新"+currentYear+"年和"+currentYear+1+"年EI数据!");
-          for(int i = currentYear;i<currentYear+2; i++) {
-         	get_Ei(String.valueOf(i));
-         	System.out.println("更新完成"+i+"年EI数据");
-          }
+    	  
+          System.out.println("开始更新"+currentYear+"年EI数据!");
+          get_Ei(String.valueOf(currentYear));
+          System.out.println("更新完成"+currentYear+"年EI数据");
+          
+          System.out.println("开始更新"+String.valueOf(currentYear+1)+"年EI数据!");
+          get_Ei(String.valueOf(currentYear+1));
+          System.out.println("更新完成"+String.valueOf(currentYear+1)+"年EI数据");
+          
+          System.out.println("开始更新"+currentYear+"年SCI数据!");
+     	  get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "SCI");
+     	  System.out.println("更新完成"+currentYear+"年SCI数据");
+     	  
+     	  System.out.println("开始更新"+currentYear+"年CPCI数据!");
+    	  get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "CPCI");
+    	  System.out.println("更新完成"+currentYear+"年CPCI数据");
+          
       }
-
-      @Scheduled(cron = "0/5 * * * * ?")//每隔5秒隔行一次
-      public void  test2() throws IOException, InterruptedException{
-         System.out.println("开始执行测试");
-         int currentYear = getSysYear();
-         for(int i = currentYear;i<currentYear+2; i++) {
-        	System.out.println(String.valueOf(i));
-         }
-         
-      }
-
 }
+      
+//      @Scheduled(cron = "0/5 * * * * ?")//每隔5秒隔行一次
+//      public void  test2() throws IOException, InterruptedException{
+//         System.out.println("开始执行测试");
+//         int currentYear = getSysYear();
+//         for(int i = currentYear;i<currentYear+2; i++) {
+//        	System.out.println(String.valueOf(i));
+//         }
+//         
+//      }
 
 /*
 按顺序依次为
