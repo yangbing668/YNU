@@ -22,7 +22,10 @@
 	<!-- Spring监听器 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring-mybatis.xml</param-value>
+		<param-value>
+			classpath:spring-mybatis.xml
+			classpath:spring-task.xml
+		</param-value>
 	</context-param>
 
 	<listener>
