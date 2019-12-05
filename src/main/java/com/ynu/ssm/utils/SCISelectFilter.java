@@ -1,4 +1,4 @@
-package test;
+package com.ynu.ssm.utils;
 
 import java.io.*;
 import java.util.ArrayList;
