@@ -8,9 +8,9 @@ import java.util.Calendar;
 public class getEi {
     public static void main(String[] args) throws IOException, InterruptedException {
     	int currentYear = getSysYear();
-        for(int i = currentYear;i<currentYear+2; i++) {
-       	System.out.println(String.valueOf(i));
-        }
+//        for(int i = currentYear;i<currentYear+2; i++) {
+        get_Ei();
+//        }
     }
 
     public static Integer getSysYear() {
@@ -19,29 +19,22 @@ public class getEi {
         return year;
     }
 
-	private static boolean get_Ei(String year) throws IOException, InterruptedException {
+	private static void get_Ei() throws IOException, InterruptedException {
 		System.out.println("start python");
-		File dir = new File("");// 参数为空
+        File dir = new File("");// 参数为空
+        String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos";
         String projectPath = dir.getCanonicalPath().replace("\\", "/");
-        String pythonPath = projectPath+"/src/main/resources/python/ei/ei.py";
-
-        Process process;
+        String pythonPath = projectPath+"/src/main/resources/python/wos/get_wos.py";
+        String[] arguments = new String[] {"python", pythonPath ,"2013","2019","CPCI-S",storePath};
         try {
-            process = Runtime.getRuntime().exec("python " + pythonPath + " -d " + year);
-            System.out.println("python " + pythonPath + " -d " + year);
-            BufferedReader stdOut=new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String s;
-            while((s=stdOut.readLine())!=null){
-                System.out.println(s);
-            }
-            int result=process.waitFor();
-            process.destroy();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+
+            Process process = Runtime.getRuntime().exec(arguments);
+            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(),"GBK"));
+            in.close();
+            int re = process.waitFor();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
 	}
 
 }

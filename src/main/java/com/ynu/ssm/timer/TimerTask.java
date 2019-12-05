@@ -38,14 +38,16 @@ public class TimerTask {
 	}
 	
 	private static boolean get_SciOrCpci(String startyear,String endYear,String paperType) throws IOException, InterruptedException {
-		String[] arguments = new String[] {"python", "C:\\Users\\Barry\\Desktop\\a\\get_wos.py",startyear,endYear,paperType};
+
+        File dir = new File("");// 参数为空
+        String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos";
+        String projectPath = dir.getCanonicalPath().replace("\\", "/");
+        String pythonPath = projectPath+"/src/main/resources/python/wos/get_wos.py";
+
+	    String[] arguments = new String[] {"python", pythonPath ,startyear,endYear,paperType,storePath};
 	    try {
 	        Process process = Runtime.getRuntime().exec(arguments);
 	        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(),"GBK"));
-	        String line = null;
-	        while ((line = in.readLine()) != null) {  
-	            System.out.println(line);  
-	        }  
 	        in.close();
 	        int re = process.waitFor();  
 	    } catch (Exception e) {
@@ -81,12 +83,12 @@ public class TimerTask {
      	  System.out.println("更新完成"+currentYear+"年SCI数据");
      	  
      	  System.out.println("开始更新"+currentYear+"年CPCI数据!");
-    	  get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "CPCI");
+    	  get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "CPCI-S");
     	  System.out.println("更新完成"+currentYear+"年CPCI数据");
           
       }
 }
-      
+
 //      @Scheduled(cron = "0/5 * * * * ?")//每隔5秒隔行一次
 //      public void  test2() throws IOException, InterruptedException{
 //         System.out.println("开始执行测试");

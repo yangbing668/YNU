@@ -34,6 +34,8 @@ public class DataController {
                                HttpServletResponse response) throws Exception {
         // 取得文件名。
         SCISelectFilter search = new SCISelectFilter();
+
+
         String sourcePath="G:\\Project\\git_repo\\YNU\\src\\main\\java\\com\\ynu\\ssm\\data";
         String newFilePath =("G:\\Project\\git_repo\\YNU\\src\\main\\java\\com\\ynu\\ssm\\data\\sci_select.xls");
 
