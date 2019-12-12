@@ -28,7 +28,7 @@ public class DataController {
 //    @RequestParam(value = "Endyear",required = false) Integer Endyear,
     @ResponseBody
     @RequestMapping("/download")
-    public String downloadFile(@RequestParam(value = "startYear",required = false) String startYear,
+    public void downloadFile(@RequestParam(value = "startYear",required = false) String startYear,
                                @RequestParam(value = "endYear",required = false) String endYear,
                                @RequestParam(value = "level",required = false) String level,
                                @RequestParam(value = "id",required = false) String id,
@@ -50,15 +50,18 @@ public class DataController {
         }else if(level.equals("CPCI")){
             System.out.println(level);
         }
-        File dir = new File("");// 参数为空
+        File dir = new File("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\");// 参数为空
         String storefile="";
         try {
             String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
-            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\selected_folder\\";
+
+            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\selected_folder\\";
+
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-            System.out.println();// new Date()为获取当前系统时间
-            storefile=newPath +"SCI"+df.format(new Date())+".xls";
-            filter.filter(storePath,storefile,storePath+"wos_dic.txt",StartYear, EndYear);
+            long time;
+            time = System.currentTimeMillis();// new Date()为获取当前系统时间
+            storefile=newPath + time +".xls";
+            filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,7 +94,7 @@ public class DataController {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }return "download";
+        }
     }
 }
 
