@@ -66,6 +66,7 @@ public class DataController {
             storefile=newPath + time +".xls";
             filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear);
             download(response,storefile,outpath);
+            delFile(new File(storefile));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,8 +101,22 @@ public class DataController {
         }
         //关闭文件输入流
         in.close();
+        out.flush();
         // 关闭输出流
         out.close();
+    }
+    static boolean delFile(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                delFile(f);
+            }
+        }
+        return file.delete();
     }
 }
 
