@@ -1,6 +1,7 @@
 package com.ynu.ssm.controller;
 
 import com.ynu.ssm.utils.SCISelectFilter;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +39,7 @@ public class DataController {
 
         int StartYear = Integer.parseInt(startYear);
         int EndYear=Integer.parseInt(startYear);
-        String outpath =("/save_out.xls");
+        String outpath =("save_out.xls");
         System.out.println(id);
         System.out.println(startYear);
         System.out.println(endYear);
@@ -52,49 +53,30 @@ public class DataController {
         }
         File dir = new File("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\");// 参数为空
         String storefile="";
+        File file = new File(outpath);
         try {
             String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
-
-            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\selected_folder\\";
-
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
             long time;
             time = System.currentTimeMillis();// new Date()为获取当前系统时间
+            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\selected_folder\\";
             storefile=newPath + time +".xls";
             filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        File file = new File(outpath);
-        String filename = file.getName();
-        String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();// 取得文件的后缀名。
-        try {
-            //读取服务器磁盘上文件的二进制数据
-//                InputStream fis = new BufferedInputStream(new FileInputStream(path));
             InputStream in = new FileInputStream(storefile);
-//                OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-            OutputStream out = new BufferedOutputStream(response.getOutputStream());
-            byte[] buffer = new byte[in.available()];
-            response.reset();
-//                将输入流转换为字符数组输出流
-            response.addHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes()));
-            response.addHeader("Content-Length", "" + file.length());
-            response.setContentType("application/octet-stream");
-//            byte[] buffer = new byte[1024*1024];
-//            int len;
-//            while ((len = in.read(buffer)) != -1) {
-//                out.write(buffer, 0, len);
-//            }
-            in.read(buffer);
-            in.close();
-
-            out.write(buffer);
+            response.setContentType("text/plain");//设置文件类型
+            response.setHeader("content-disposition", "attachment;filename=" + outpath);
+            response.setHeader("Content-Length", "" + file.length());
+            OutputStream out = response.getOutputStream();//
+            IOUtils.copy(in, out);
             out.flush();
             out.close();
-        } catch (IOException e) {
+            // 将内容按字节从一个InputStream对象复制到一个OutputStream对象，
+            // 并返回复制的字节数。同样有一个方法支持从Reader对象复制到Writer对象
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 }
 
