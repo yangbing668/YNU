@@ -28,7 +28,7 @@ public class UserSelect {
                 System.out.println(item);
                 int year = Integer.parseInt( item[0] );
                 if(year >= startYear && year <= endYear){
-                    DataSelect(relatively_Path+"/"+path[i],store_Path+"/"+time+".csv",author_type,author_name);
+                    DataSelect(relatively_Path+"/"+path[i],store_Path+"/"+time+".csv",author_type,author_name,i);
                 }
             }
 
@@ -40,7 +40,7 @@ public class UserSelect {
     /*
     *传入的是源文件和需要保存的文件
     **/
-    public static void DataSelect(String filePath,String savePath,int author_type,String author_name) {
+    public static void DataSelect(String filePath,String savePath,int author_type,String author_name,int count) {
         try {
             String srcPath = filePath;
             String charset = "utf-8";
@@ -60,7 +60,9 @@ public class UserSelect {
 
                 //获取列名的集合
                 columns = iterator.next();
-
+                if(count == 0){
+                    cwriter.writeNext(columns);
+                }
                 //需要传入类型，默认为0表示全部；第一作者为1；通讯作者为2；
 
 
