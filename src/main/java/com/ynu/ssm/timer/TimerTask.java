@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TimerTask {
+    public static void main(String[] args)  throws IOException, InterruptedException {
+        get_Ei("2020");
+    }
 	
 	private static boolean get_Ei(String year) throws IOException, InterruptedException {
 		System.out.println("start python");
@@ -71,6 +74,20 @@ public class TimerTask {
         int year = Integer.valueOf(date.get(Calendar.YEAR));
         return year;
     }
+    public static String[] printFiles(File dir,int tab) {
+        if(dir.isDirectory()) {
+            File next[]=dir.listFiles();
+            String[] s = new String[next.length];
+            for (int i = 0; i < next.length; i++) {
+                s[i] = next[i].getName();
+            }
+            return s;
+        }else{
+            String[] s = new String[1];
+            return s;
+        }
+
+    }
 
      //                  秒分时日 月周
      //每周星期六执行一次
@@ -89,6 +106,15 @@ public class TimerTask {
           System.out.println("开始更新"+String.valueOf(currentYear+1)+"年EI数据!");
           get_Ei(String.valueOf(currentYear+1));
           System.out.println("更新完成"+String.valueOf(currentYear+1)+"年EI数据");
+
+          String filePath=System.getProperty("user.dir");
+          String relativelyPath = filePath+"/src/main/resources/python/ei/ei_compress_files";
+          String store_Path = filePath+"/src/main/resources/python/ei/ei_files";
+          String[] path = printFiles(new File(relativelyPath), 1);
+
+          for(int i=0;i<path.length;i++){
+              System.out.println(testRead.DataSelect(relativelyPath+"/"+path[i],store_Path+"/"+path[i]));
+          }
           
           System.out.println("开始更新"+currentYear+"年SCI数据!");
      	  String[] fileNames = get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "SCI");

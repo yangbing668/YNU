@@ -53,7 +53,7 @@ public class TestRead {
                     line = iterator.next();
                     if (line!=null) {
                         sum += 1;
-                        System.out.println(sum);
+//                        System.out.println(sum);
 //                        if (true || line[6].contains("Yunnan University")) {
                         if (line[list_1].contains("Yunnan University")) {
                             String item[] = line[list_2].split(";");
