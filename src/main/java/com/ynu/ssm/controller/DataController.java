@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -33,31 +35,41 @@ public class DataController {
                                @RequestParam(value = "author",required = false) String author,
                                HttpServletResponse response) throws Exception {
         // 取得文件名。
-        SCISelectFilter search = new SCISelectFilter();
 
-
-        String sourcePath="C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI";
-        String newFilePath =("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\sci_select.xls");
-
-//        System.out.println(new File(newFilePath).getAbsolutePath());
         int StartYear = Integer.parseInt(startYear);
         int EndYear=Integer.parseInt(startYear);
-        search.filter(sourcePath,newFilePath,StartYear,EndYear);
-
-        String path = ("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\sci_select.xls");
         String outpath =("/save_out.xls");
         System.out.println(id);
         System.out.println(startYear);
         System.out.println(endYear);
         System.out.println(level);
         System.out.println(author);
+        SCISelectFilter filter = new SCISelectFilter();
+        if (level.equals("SCI")){
+            System.out.println(level);
+        }else if(level.equals("CPCI")){
+            System.out.println(level);
+        }
+        File dir = new File("");// 参数为空
+        String storefile="";
+        try {
+            String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
+            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\selected_folder\\";
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            System.out.println();// new Date()为获取当前系统时间
+            storefile=newPath +"SCI"+df.format(new Date())+".xls";
+            filter.filter(storePath,storefile,storePath+"wos_dic.txt",StartYear, EndYear);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         File file = new File(outpath);
         String filename = file.getName();
         String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();// 取得文件的后缀名。
         try {
             //读取服务器磁盘上文件的二进制数据
 //                InputStream fis = new BufferedInputStream(new FileInputStream(path));
-            InputStream in = new FileInputStream(path);
+            InputStream in = new FileInputStream(storefile);
 //                OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
             OutputStream out = new BufferedOutputStream(response.getOutputStream());
             byte[] buffer = new byte[in.available()];

@@ -1,7 +1,9 @@
 package com.ynu.ssm.utils;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,11 +39,22 @@ public class SCISelectFilter {
     public static void main(String[] args) {
         SCISelectFilter filter = new SCISelectFilter();
 //        fliter.getChineseTitelNameMap("E:\\\\黑马练习\\\\baisic-code\\\\t.txt");
-        filter.filter("E:\\黑马练习\\baisic-code\\out\\production\\day04_code\\", "E:\\黑马练习\\baisic-code\\out\\production\\savedrecs filtered.xls", 2017, 2019);
+        File dir = new File("");// 参数为空
+        String storePath = null;
+        try {
+            storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
+            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\selected_folder\\";
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            System.out.println();// new Date()为获取当前系统时间
+            filter.filter(storePath,newPath +"SCI"+df.format(new Date())+".xls",storePath+"wos_dic.txt",2017, 2019);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 //        fliter.getSelect("E:\\黑马练习\\baisic-code\\out\\production\\day04_code\\savedrecs1.txt", "E:\\黑马练习\\baisic-code\\out\\production\\savedrecs1.xls");
     }
 
-    public void filter(String sourcePath, String newFile, int startYear, int endYear) {
+    public void filter(String sourcePath, String newFile, String dicPath,int startYear, int endYear) {
         ArrayList<String> keywords = new ArrayList<>();
         for (int i = startYear; i <= endYear; i++) {
             keywords.add(String.valueOf(i));
@@ -58,7 +71,8 @@ public class SCISelectFilter {
                 getSelect(file,datas,first_authors,first_author_colleges);
 
             }
-            HashMap<String, String> map = getChineseTitelNameMap("E:\\\\黑马练习\\\\baisic-code\\\\wos_dic.txt");
+
+            HashMap<String, String> map = getChineseTitelNameMap(dicPath);
             BufferedReader bReader1 = new BufferedReader(
                     new FileReader(files.get(0)));
             String[] abTitle = bReader1.readLine().split("\t");
@@ -88,6 +102,7 @@ public class SCISelectFilter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
     }
 
