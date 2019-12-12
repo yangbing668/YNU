@@ -7,9 +7,9 @@ import java.util.Scanner;
 
 
 public class DelNan{
-	static String newline = "";
-	@SuppressWarnings({ "resource", "null" })
+
 	public static String DataClean(String filePath,String savePath) {
+	    String newline = "";
         File inFile = new File(filePath);
         BufferedReader br = null;
         String readedLine;
@@ -72,7 +72,7 @@ public class DelNan{
         {
 			if(bw != null)
 			{
-				System.out.println(newline);
+//				System.out.println(newline);
 				bw.close();
 			}
 		}catch(IOException e) {
@@ -83,6 +83,9 @@ public class DelNan{
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(DataClean("C:\\Users\\Barry\\Desktop\\1.txt","C:\\Users\\Barry\\Desktop\\2.txt"));
+	    for (int i=2013;i<=2019;i++){
+            System.out.println(DataClean("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\"+String.valueOf(i)+".txt","C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\"+String.valueOf(i)+".txt"));
+        }
+
     }
 }

@@ -36,15 +36,15 @@ public class DataController {
         SCISelectFilter search = new SCISelectFilter();
 
 
-        String sourcePath="G:\\Project\\git_repo\\YNU\\src\\main\\java\\com\\ynu\\ssm\\data";
-        String newFilePath =("G:\\Project\\git_repo\\YNU\\src\\main\\java\\com\\ynu\\ssm\\data\\sci_select.xls");
+        String sourcePath="C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI";
+        String newFilePath =("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\sci_select.xls");
 
 //        System.out.println(new File(newFilePath).getAbsolutePath());
         int StartYear = Integer.parseInt(startYear);
         int EndYear=Integer.parseInt(startYear);
         search.filter(sourcePath,newFilePath,StartYear,EndYear);
 
-        String path = ("G:\\Project\\git_repo\\YNU\\src\\main\\java\\com\\ynu\\ssm\\data\\sci_select.xls");
+        String path = ("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\sci_select.xls");
         String outpath =("/save_out.xls");
         System.out.println(id);
         System.out.println(startYear);

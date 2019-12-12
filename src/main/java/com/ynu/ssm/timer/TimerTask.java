@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
+import com.ynu.ssm.utils.DelNan;
+import com.ynu.ssm.utils.TableHandler;
+import com.ynu.ssm.utils.TestRead;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -37,7 +40,7 @@ public class TimerTask {
         return true;
 	}
 	
-	private static boolean get_SciOrCpci(String startyear,String endYear,String paperType) throws IOException, InterruptedException {
+	private static String[] get_SciOrCpci(String startyear,String endYear,String paperType) throws IOException, InterruptedException {
 
         File dir = new File("");// 参数为空
         String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos";
@@ -53,7 +56,13 @@ public class TimerTask {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-	    return true;
+	    String txtsName[] = new String[Integer.valueOf(endYear)-Integer.valueOf(startyear)+1];
+	    int index = 0;
+	    for(int i = Integer.valueOf(startyear); i <= Integer.valueOf(endYear);i++){
+            txtsName[index]=storePath+"\\"+paperType+"\\"+String.valueOf(i)+".txt";
+            index += 1;
+        }
+	    return txtsName;
 	}
 
 
@@ -68,6 +77,9 @@ public class TimerTask {
       @Scheduled(cron = "0 0 1 ? * 6")
       public void updateEI() throws IOException, InterruptedException
       {
+          DelNan filter = new DelNan();
+          TestRead testRead = new TestRead();
+          TableHandler handler = new TableHandler();
     	  int currentYear = getSysYear();
     	  
           System.out.println("开始更新"+currentYear+"年EI数据!");
@@ -79,12 +91,19 @@ public class TimerTask {
           System.out.println("更新完成"+String.valueOf(currentYear+1)+"年EI数据");
           
           System.out.println("开始更新"+currentYear+"年SCI数据!");
-     	  get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "SCI");
+     	  String[] fileNames = get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "SCI");
+          for (int i = 0; i < fileNames.length; i++) {
+              filter.DataClean(fileNames[i],fileNames[i]);
+              handler.getSections(fileNames[i],fileNames[i]);
+          }
      	  System.out.println("更新完成"+currentYear+"年SCI数据");
      	  
      	  System.out.println("开始更新"+currentYear+"年CPCI数据!");
-    	  get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "CPCI-S");
-    	  System.out.println("更新完成"+currentYear+"年CPCI数据");
+          fileNames = get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "CPCI-S");
+          for (int i = 0; i < fileNames.length; i++) {
+              filter.DataClean(fileNames[i],fileNames[i]);
+          }
+          System.out.println("更新完成"+currentYear+"年CPCI数据");
           
       }
 }

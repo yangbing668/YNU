@@ -18,9 +18,6 @@ import java.util.ArrayList;
 
  */
 public class TableHandler {
-    public static String file_path = "C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\paperFiles";//new TableHandler().getClass().getResource("/").getPath();
-    public static String file_name = "/savedrecs.txt";
-    public static String handled_file_name = "/savedrecs1.txt";
     public static String url = "http://webapi.fenqubiao.com/api/user/get?user=yunnandaxue&password=kjc000000";
     /**
      * 返回指定wos全部数据的分区，按行的顺序返回，其中含有0的列说明api返回值错误
@@ -121,18 +118,26 @@ public class TableHandler {
 
             }
             bReader = new BufferedReader(new FileReader(dataFile));
-            File file =new File(handled_file);
-            Writer out =new FileWriter(file);
-
             int i = 0;
             line = bReader.readLine();
             String data=line.replace("\n","")+"\tjcr_section\n";
-            out.write(data);
+            ArrayList<String> save_data= new ArrayList<>();
+            save_data.add(data);
+
             while ((line = bReader.readLine()) != null) {
                 data=line.replace("\n","")+sections.get(i)+"\n";
-                out.write(data);
+                save_data.add(data);
+//                out.write(data);
                 i++;
             }
+            File file =new File(handled_file);
+            Writer out =new FileWriter(file);
+            for (String save_str:
+                 save_data) {
+                out.write(save_str);
+
+            }
+
             out.close();
 
         } catch (Exception e) {
@@ -142,7 +147,9 @@ public class TableHandler {
        return sections;
     }
     public static void main(String[] args) {
-        System.out.println(TableHandler.getSections(TableHandler.file_path + TableHandler.file_name,TableHandler.file_path + TableHandler.handled_file_name));
+        for (int i=2013;i<=2019;i++){
+            System.out.println(getSections("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\"+String.valueOf(i)+".txt","C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\"+String.valueOf(i)+".txt"));
+        }
     }
 
 
