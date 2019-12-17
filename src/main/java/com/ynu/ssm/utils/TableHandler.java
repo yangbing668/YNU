@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
  */
 public class TableHandler {
-    public static String url = "http://webapi.fenqubiao.com/api/user/get?user=yunnandaxue&password=kjc000000";
+    public static String url = "http://www.fenqubiao.com/getjournal.ashx?username=yunnandaxue&password=kjc000000";//http://webapi.fenqubiao.com/api/user/get?user=yunnandaxue&password=kjc000000
     /**
      * 返回指定wos全部数据的分区，按行的顺序返回，其中含有0的列说明api返回值错误
      */
@@ -42,15 +42,10 @@ public class TableHandler {
                 if (colmNames[i].equals("SN")) {
                     ISSNIndex = i;
 
-                } else if (colmNames[i].equals("WC")) {
-                    WCIndex = i;
-                } else if (colmNames[i].equals("PY")) {
-                    PYIndex = i;
-                } else if (colmNames[i].equals("SO")) {
-                    SOIndex = i;
-                } else if (colmNames[i].equals("EI")) {
-                    EIIndex = i;
                 }
+//                else if (colmNames[i].equals("PY")) {
+//                    PYIndex = i;
+//                }
             }
             int unknownNum = 0;
             while ((line = bReader.readLine()) != null) {
@@ -60,60 +55,20 @@ public class TableHandler {
                  */
                 String datavalue[] = line.split("\t");
                 String ISSN_name = datavalue[ISSNIndex].toLowerCase();
-                String []WC_names = datavalue[WCIndex].toUpperCase().split("; ");
-//                String WC_name2 = "";
-//                if (WC_name.contains("; ")) {
-//                    String[] strs = WC_name.split("; ");
-//                    WC_name = strs[1];
-//                    WC_name2 = strs[0];
-//
-//                }
-                String Year = datavalue[PYIndex];
+//                String Year = datavalue[PYIndex];
+                String htmls = t6.getPageSource(url + "&year=2018" + "&ISSN=" + ISSN_name, "utf-8");
 
-                String htmls = t6.getPageSource(url + "&year=2018" + "&keyword=" + ISSN_name, "utf-8");
                 if (htmls.equals("")){
-                    ISSN_name = datavalue[SOIndex];
-                    ISSN_name=ISSN_name.replace(" ","%20");
-//                    Thread.sleep(100);
-
-                    htmls = t6.getPageSource(url + "&year=2018" + Year + "&keyword=" + ISSN_name, "utf-8");
-                    if (htmls.equals("")){
-                        ISSN_name = datavalue[EIIndex];
-                        ISSN_name=ISSN_name.replace(" ","%20");
-//                        Thread.sleep(100);
-                        htmls = t6.getPageSource(url + "&year=2018" + Year + "&keyword=" + ISSN_name, "utf-8");
-                    }
-                    if (htmls.equals("")){
-                    	unknownNum+=1;
-                        System.out.print("未知分区个数：" + unknownNum);
-                    }
+                    unknownNum+=1;
+                    System.out.println("未知分区个数：" + unknownNum);
                 }
                 try {
-
-                    JSONObject obj = new JSONObject(htmls);
-                    JSONArray array = obj.getJSONArray("JCR");
-                    boolean sectionIsAdded = false;
-                    for(String WC_name:WC_names) {
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject child = array.getJSONObject(i);
-                            if (child.getString("Name").equals(WC_name)) {
-                                sections.add(child.getString("Section"));
-                                sectionIsAdded = true;
-                                break;
-                            }
-
-                        }
-                        if (sectionIsAdded){
-                            break;
-                        }
-                    }
-                    if (!sectionIsAdded) {
-                        sections.add("0");
-                    }
+                    JSONArray array = new JSONArray(htmls);
+                    JSONObject child = array.getJSONObject(0);
+                    child.getString("Section_S");
+                    sections.add(child.getString("Section_S"));
                 } catch (JSONException e) {
-//                    e.printStackTrace();
                     sections.add("0");
-                    System.out.println(htmls);
                 }
 
             }
@@ -147,7 +102,7 @@ public class TableHandler {
        return sections;
     }
     public static void main(String[] args) {
-        for (int i=2013;i<=2019;i++){
+        for (int i=2019;i<=2019;i++){
             System.out.println(getSections("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\"+String.valueOf(i)+".txt","C:\\Users\\Barry\\Desktop\\YNU\\trunk\\src\\main\\resources\\python\\wos\\SCI\\"+String.valueOf(i)+".txt"));
         }
     }

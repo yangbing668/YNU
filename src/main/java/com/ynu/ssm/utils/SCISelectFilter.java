@@ -27,7 +27,7 @@ public class SCISelectFilter {
                 String key = bReader.readLine().replace("\t", "").replace("\n", "");
                 String value = bReader.readLine().replace("\t", "").replace("\n", "");
 //                System.out.println(key + "\t" + value);
-                System.out.println(key);
+//                System.out.println(key);
                 bReader.readLine();
                 map.put(key, value);
             }
@@ -46,7 +46,7 @@ public class SCISelectFilter {
             storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
             String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\selected_folder\\";
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-            System.out.println();// new Date()为获取当前系统时间
+//            System.out.println();// new Date()为获取当前系统时间
             filter.filter(storePath,newPath +"SCIy"+".xls",storePath+"wos_dic.txt","Du, Lin","Zhao, QH", 2017, 2018);
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class SCISelectFilter {
 
             String[] abTitle = bReader1.readLine().split("\t");
             for (int i = 0; i < abTitle.length; i++) {
-                System.out.println(abTitle[i]);
+//                System.out.println(abTitle[i]);
                 bw.write(map.get(abTitle[i]));
                 bw.write("\t");
 
@@ -163,7 +163,7 @@ public class SCISelectFilter {
                 String thisCollege_ = author_college.split("] ")[1].split("; ")[0];
                 String correspondingCollege = datavalue[RP_index].split("\\.; ")[0];
 
-                if (thisCollege_.contains("Yunnan Univ,")||correspondingCollege.contains("Yunnan Univ,")) {
+                if (thisCollege_.contains("Yunnan Univ,")||correspondingCollege.contains("Yunnan Univ,")||thisCollege_.contains("Yunnan University")||correspondingCollege.contains("Yunnan University")) {
 //                    if(!thisCollege_.contains("Yunnan Univ,"))
 //                    System.out.println(thisCollege_+"----------------"+correspondingCollege);
 //                    System.out.println(datavalue[RP_index].replace("\n",""));

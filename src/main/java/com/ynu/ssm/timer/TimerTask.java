@@ -15,9 +15,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TimerTask {
-    public static void main(String[] args)  throws IOException, InterruptedException {
-        get_Ei("2020");
-    }
 	
 	private static boolean get_Ei(String year) throws IOException, InterruptedException {
 		System.out.println("start python");
@@ -94,7 +91,6 @@ public class TimerTask {
       @Scheduled(cron = "0 0 1 ? * 6")
       public void updateEI() throws IOException, InterruptedException
       {
-          DelNan filter = new DelNan();
           TestRead testRead = new TestRead();
           TableHandler handler = new TableHandler();
     	  int currentYear = getSysYear();
@@ -119,16 +115,12 @@ public class TimerTask {
           System.out.println("开始更新"+currentYear+"年SCI数据!");
      	  String[] fileNames = get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "SCI");
           for (int i = 0; i < fileNames.length; i++) {
-              filter.DataClean(fileNames[i],fileNames[i]);
               handler.getSections(fileNames[i],fileNames[i]);
           }
      	  System.out.println("更新完成"+currentYear+"年SCI数据");
      	  
      	  System.out.println("开始更新"+currentYear+"年CPCI数据!");
           fileNames = get_SciOrCpci(String.valueOf(currentYear), String.valueOf(currentYear), "CPCI-S");
-          for (int i = 0; i < fileNames.length; i++) {
-              filter.DataClean(fileNames[i],fileNames[i]);
-          }
           System.out.println("更新完成"+currentYear+"年CPCI数据");
           
       }

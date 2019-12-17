@@ -22,6 +22,7 @@ public class DelNan{
         	newline+=readedLine + "\n";
             while((readedLine = br.readLine()) != null) 
             {
+
                 if(readedLine.contains("Yunnan University")||readedLine.contains("Yunnan Univ,"))
                 {
                 	newline+=readedLine + "\n";
