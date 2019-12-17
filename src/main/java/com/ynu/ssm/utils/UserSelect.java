@@ -14,27 +14,31 @@ import java.util.List;
 public class UserSelect {
     static String later_line = "";
 
-    public static void UserSelect(int startYear, int endYear,int author_type,String author_name){
+    public static String UserSelector(int startYear, int endYear,int author_type,String author_name,String filePath ){
+        String savepath="";
         try{
-            String filePath=System.getProperty("user.dir");
-            String relatively_Path = filePath+"/src/main/resources/python/ei/ei_files";
-            String store_Path = filePath+"/src/main/resources/python/ei/ei_files_download";
+//            String filePath=System.getProperty("user.dir");
+            String relatively_Path = filePath+"\\src\\main\\resources\\python\\ei\\ei_files";
+            String store_Path = filePath+"\\src\\main\\resources\\python\\ei\\ei_files_download";
             String[] path = printFiles(new File(relatively_Path), 1);
             long time;
             time = System.currentTimeMillis();
-            System.out.println(path);
+//            System.out.println(path.toString());
             for (int i=0;i<path.length;i++){
                 String item[] = path[i].split("_");
-                System.out.println(item);
+//                System.out.println(item);
                 int year = Integer.parseInt( item[0] );
                 if(year >= startYear && year <= endYear){
-                    DataSelect(relatively_Path+"/"+path[i],store_Path+"/"+time+".csv",author_type,author_name,i);
+                    savepath=store_Path+"\\"+time+".csv";
+                    DataSelect(relatively_Path+"\\"+path[i],savepath,author_type,author_name,i);
                 }
             }
 
         }catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(savepath);
+        return savepath;
     }
 
     /*
@@ -80,7 +84,7 @@ public class UserSelect {
                     line = iterator.next();
                     if (line!=null) {
                         sum += 1;
-                        System.out.println(sum);
+//                        System.out.println(sum);
 
                         if(author_type == 1){
                             if(author_name!=null){
@@ -109,7 +113,7 @@ public class UserSelect {
                         break;
                     }
                 }
-                System.out.println("sum2:\t"+sum2);
+//                System.out.println("sum2:\t"+sum2);
                 cwriter.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -134,7 +138,9 @@ public class UserSelect {
 
     }
     public static void main(String[] args) {
-        UserSelect(2013,2014,1,"Qing");
+
+
+        UserSelector(2013,2014,1,"Qing",System.getProperty("user.dir"));
 //        String filePath=System.getProperty("user.dir");
 //        String relativelyPath = filePath+"/src/main/resources/python/ei/ei_compress_files";
 //        String store_Path = filePath+"/src/main/resources/python/ei/ei_files";
@@ -144,4 +150,5 @@ public class UserSelect {
 //            System.out.println(DataSelect(relativelyPath+"/"+path[i],store_Path+"/"+path[i]));
 //        }
     }
+
 }
