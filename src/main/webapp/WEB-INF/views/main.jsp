@@ -27,7 +27,7 @@
 				var opt1 = null;
 				var now = new Date()
 				var nowYear = now.getFullYear()
-				for(var i = 1970; i <= nowYear; i++)
+				for(var i = 2013; i <= nowYear; i++)
 				{
 					opt1 = document.createElement("option");
 					opt1.value = i;
@@ -43,7 +43,7 @@
             <script type="text/javascript">
             	var endYear = document.getElementById("endYear");
 				var opt2 = null;
-				for(var i = 1970; i <=2019; i++)
+				for(var i = 2013; i <=2019; i++)
 				{
 					opt2 = document.createElement("option");
 					opt2.value = i;
@@ -58,10 +58,10 @@
             	<option>通讯作者</option>
             </select>
             作者：
-            <input type="text" class="author" name="author" required="required" />
+            <input type="text" class="author" name="author" />
             <br>
-            <input type="submit" value="查询" class="Find">
-            <input type="button" value="下载" class="Download" id="Download" onclick="download()">
+<%--            <input type="submit" value="查询" class="Find">--%>
+            <input type="submit" value="下载" class="Download" id="Download" onclick="download()">
         </form>
     </div>
     <div class="Count" id="Count">
