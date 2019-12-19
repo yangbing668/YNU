@@ -160,8 +160,16 @@ public class SCISelectFilter {
                     if(!corresponding_author.contains(correspondingAuthor)){
                         continue;
                     }
-                String thisCollege_ = author_college.split("] ")[1].split("; ")[0];
+                String[] tCollege_ = author_college.split("] ");
+                String thisCollege_ = "";
                 String correspondingCollege = datavalue[RP_index].split("\\.; ")[0];
+                if(tCollege_.length>1){
+                    thisCollege_ = tCollege_[1].split("; ")[0];
+                }
+                else{
+                    thisCollege_ = tCollege_[0].split("; ")[0];
+                }
+
 
                 if (thisCollege_.contains("Yunnan Univ,")||correspondingCollege.contains("Yunnan Univ,")||thisCollege_.contains("Yunnan University")||correspondingCollege.contains("Yunnan University")) {
 //                    if(!thisCollege_.contains("Yunnan Univ,"))
