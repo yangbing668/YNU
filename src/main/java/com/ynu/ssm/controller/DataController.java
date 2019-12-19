@@ -33,21 +33,14 @@ public class DataController {
 //    @RequestParam(value = "Startyear",required = false) Integer Startyear,
 //    @RequestParam(value = "Endyear",required = false) Integer Endyear,
     @RequestMapping(value = "/download", method = RequestMethod.POST)
-    public void downloadFile(@RequestParam(value = "startYear",required = false) String startYear,
-                               @RequestParam(value = "endYear",required = false) String endYear,
+    public void downloadFile(@RequestParam(value = "startYear",required = false) Integer StartYear,
+                               @RequestParam(value = "endYear",required = false) Integer EndYear,
                                @RequestParam(value = "level",required = false) Integer level,
                                @RequestParam(value = "type",required = false) String type,
                                @RequestParam(value = "author",required = false) String author,
                                HttpServletResponse response) throws Exception {
-        // 取得文件名。
-        int StartYear = Integer.parseInt(startYear);
-        int EndYear=Integer.parseInt(endYear);
-//        int ID=Integer.parseInt(id);
-//        System.out.println(type);
-//        System.out.println(startYear);
-//        System.out.println(endYear);
-//        System.out.println(level);
-//        System.out.println(author);
+
+        System.out.println(author);
         SCISelectFilter filter = new SCISelectFilter();
         File dir = new File("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\");// 参数为空
         String storefile="";
@@ -71,7 +64,7 @@ public class DataController {
                     filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,author,StartYear, EndYear);
                 }
                 int totalLines = getTotalLines(new File(storefile)) - 1;
-                String outpath = "SCI_"+ startYear+"-"+endYear+"-"+totalLines+".xls";
+                String outpath = "SCI_"+ StartYear+"-"+EndYear+"-"+totalLines+".xls";
                 download(response,storefile,outpath,totalLines);
                 delFile(new File(storefile));
 
@@ -93,7 +86,7 @@ public class DataController {
                     filter.filter(storePath,storefile,storePath+"wos_dic.txt",author,null,StartYear, EndYear);
                 }
                 int totalLines = getTotalLines(new File(storefile)) - 1;
-                String outpath = "CPCI_"+ startYear+"-"+endYear+"-"+totalLines+".xls";
+                String outpath = "CPCI_"+ StartYear+"-"+EndYear+"-"+totalLines+".xls";
                 download(response,storefile,outpath,totalLines);
                 delFile(new File(storefile));
 
@@ -110,7 +103,7 @@ public class DataController {
                 try{
                     totalLines = getTotalLines(new File(storefile)) - 1;
                 }catch (Exception e){totalLines = -1;}
-                String EIoutpath = "EI_"+ startYear+"-"+endYear+"-"+totalLines+".csv";
+                String EIoutpath = "EI_"+ StartYear+"-"+EndYear+"-"+totalLines+".csv";
                 download(response,storefile,EIoutpath,totalLines);
                 delFile(new File(storefile));
             } catch (Exception e) {
