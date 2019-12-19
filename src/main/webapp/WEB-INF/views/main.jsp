@@ -10,16 +10,16 @@
 </head>
 <body>
     <div class="Search">
-        <form action="showUser" method="post">
+        <form action="download" method="post">
         选择类别：
-        	<select id = "id" class="category" name="id" onclick="choose()">
-        		<option value=1>EI</option>
-        		<option value=1>SCI</option>
-        		<option value=2>CPCI</option>
+        	<select id = "type" class="category" name="type" onclick="choose()">
+        		<option value="EI">EI</option>
+        		<option value="SCI">SCI</option>
+        		<option value="CPCI">CPCI</option>
         	</select>
         	<br>
            选择年份：
-           	<select id = "startYear" class="Startyear">
+           	<select id = "startYear" name="startYear" class="Startyear">
            		<option>--请选择--</option>
            	</select>
            	<script type="text/javascript">
@@ -37,7 +37,7 @@
            	</script>
            	<label>——</label>
            	
-            <select id = "endYear" class="Endyear">
+            <select id = "endYear" name="endYear" class="Endyear">
             	<option>--请选择--</option>
             </select>
             <script type="text/javascript">
@@ -53,12 +53,13 @@
             </script>
             <br>
             选择作者：
-            <select id = "level" class="level" onclick="authorLevel()">
-            	<option>第一作者</option>
-            	<option>通讯作者</option>
+            <select id ="level" name="level" class="level" onclick="authorLevel()">
+                <option value=0>全部</option>
+            	<option value=1>第一作者</option>
+            	<option value=2>通讯作者</option>
             </select>
             作者：
-            <input type="text" class="author" name="author" />
+            <input type="text" class="author" name="author" id="author"/>
             <br>
 <%--            <input type="submit" value="查询" class="Find">--%>
             <input type="submit" value="下载" class="Download" id="Download" onclick="download()">
