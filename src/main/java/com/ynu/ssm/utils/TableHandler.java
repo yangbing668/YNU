@@ -31,6 +31,7 @@ public class TableHandler {
             bReader = new BufferedReader(
                     new FileReader(dataFile));
             String line;
+            
 
             /**
              * Looping the read block until all lines in the file are read.

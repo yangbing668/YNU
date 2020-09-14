@@ -55,7 +55,7 @@ public class TestRead {
                         sum += 1;
 //                        System.out.println(sum);
 //                        if (true || line[6].contains("Yunnan University")) {
-                        if (line[list_1].contains("Yunnan University")) {
+                        if (line[list_1].contains("Yunnan University,")) {
                             String item[] = line[list_2].split(";");
                             List<String> list = new ArrayList();
                             for (int i = 0; i < line.length; i++) {

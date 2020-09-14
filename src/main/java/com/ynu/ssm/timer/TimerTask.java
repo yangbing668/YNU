@@ -15,6 +15,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TimerTask {
+	public static void main(String[] args) throws IOException, InterruptedException {
+//		TableHandler handler = new TableHandler();
+//		System.out.println("开始更新SCI数据!");
+//   	  	String[] fileNames = get_SciOrCpci("2016" , "2020", "SCI");
+//        for (int i = 0; i < fileNames.length; i++) {
+//            handler.getSections(fileNames[i],fileNames[i]);
+//        }
+//   	  	System.out.println("更新完成SCI数据");
+		get_Ei("2017");
+		
+		
+	}
 	
 	private static boolean get_Ei(String year) throws IOException, InterruptedException {
 		System.out.println("start python");
@@ -46,7 +58,20 @@ public class TimerTask {
         String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos";
         String projectPath = dir.getCanonicalPath().replace("\\", "/");
         String pythonPath = projectPath+"/src/main/resources/python/wos/get_wos.py";
-
+        for(int i = Integer.valueOf(startyear); i <= Integer.valueOf(endYear);i++){
+            try {
+        		File file =new File(storePath+"\\"+paperType+"\\"+String.valueOf(i)+".txt");
+        		if (file.exists()) {
+        			file.delete();
+        			file.createNewFile();
+        		}
+        		else {
+        			file.createNewFile();
+        		}
+        		
+        	}
+        	catch (Exception e) {}
+        }
 	    String[] arguments = new String[] {"python", pythonPath ,startyear,endYear,paperType,storePath};
 	    try {
 	        Process process = Runtime.getRuntime().exec(arguments);
@@ -97,6 +122,14 @@ public class TimerTask {
     	  
           System.out.println("开始更新"+currentYear+"年EI数据!");
           get_Ei(String.valueOf(currentYear));
+          String filePath1=System.getProperty("user.dir");
+          String relativelyPath1 = filePath1+"/src/main/resources/python/ei/ei_compress_files";
+          String store_Path1 = filePath1+"/src/main/resources/python/ei/ei_files";
+          String[] path1 = printFiles(new File(relativelyPath1), 1);
+
+          for(int i=0;i<path1.length;i++){
+              System.out.println(TestRead.DataSelect(relativelyPath1+"/"+path1[i],store_Path1+"/"+path1[i]));
+          }
           System.out.println("更新完成"+currentYear+"年EI数据");
           
           System.out.println("开始更新"+String.valueOf(currentYear+1)+"年EI数据!");
@@ -124,7 +157,8 @@ public class TimerTask {
           System.out.println("更新完成"+currentYear+"年CPCI数据");
           
       }
-}
+
+//}
 
 //      @Scheduled(cron = "0/5 * * * * ?")//每隔5秒隔行一次
 //      public void  test2() throws IOException, InterruptedException{
@@ -135,7 +169,7 @@ public class TimerTask {
 //         }
 //         
 //      }
-
+}
 /*
 按顺序依次为
       1  秒（0~59）

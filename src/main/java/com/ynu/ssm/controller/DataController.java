@@ -37,6 +37,7 @@ public class DataController {
                                @RequestParam(value = "endYear",required = false) Integer EndYear,
                                @RequestParam(value = "level",required = false) Integer level,
                                @RequestParam(value = "type",required = false) String type,
+                               @RequestParam(value = "isImportant",required = false) String isImportant,
                                @RequestParam(value = "author",required = false) String author,
                                HttpServletResponse response) throws Exception {
 
@@ -48,20 +49,28 @@ public class DataController {
         long time;
         time = System.currentTimeMillis();// new Date()为获取当前系统时间
         String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\selected_folder\\";
-
-
+        boolean isImportant_ = true;
+        if (isImportant.equals("is")){
+        	isImportant_=true;
+        }
+        else {
+        	isImportant_=false;
+        }
         if (type.equals("SCI")){
             try {
                 String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
                 storefile=newPath + time +".xls";
                 if(level==0){
-                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear);
+                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear,isImportant_, level);
                 }
                 else if(level==1){
-                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",author,null,StartYear, EndYear);
+                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",author,null,StartYear, EndYear,isImportant_, level);
                 }
-                else{
-                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,author,StartYear, EndYear);
+                else if(level==2){
+                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,author,StartYear, EndYear,isImportant_, level);
+                }
+                else {
+                	 filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear,isImportant_, level);
                 }
                 int totalLines = getTotalLines(new File(storefile)) - 1;
                 String outpath = "SCI_"+ StartYear+"-"+EndYear+"-"+totalLines+".xls";
@@ -77,13 +86,16 @@ public class DataController {
                 String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\CPCI-S\\";
                 storefile=newPath + time +".xls";
                 if(level==0){
-                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear);
+                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear,isImportant_, level);
                 }
                 else if(level==1){
-                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",author,null,StartYear, EndYear);
+                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",author,null,StartYear, EndYear,isImportant_, level);
                 }
-                else{
-                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",author,null,StartYear, EndYear);
+                else if(level==2){
+                    filter.filter(storePath,storefile,storePath+"wos_dic.txt",author,null,StartYear, EndYear,isImportant_, level);
+                }
+                else {
+                	filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear,isImportant_, level);
                 }
                 int totalLines = getTotalLines(new File(storefile)) - 1;
                 String outpath = "CPCI_"+ StartYear+"-"+EndYear+"-"+totalLines+".xls";
@@ -98,6 +110,7 @@ public class DataController {
             try {
                 String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\ei\\";
                 UserSelect us =new UserSelect();
+//                System.out.println(level);
                 storefile=us.UserSelector(StartYear,EndYear,level,author,dir.getCanonicalPath());
                 int totalLines = -1;
                 try{
@@ -116,14 +129,14 @@ public class DataController {
         File file = new File(filename);
         if (totalLines==-1){
             response.setContentType("text/html; charset=UTF-8");//注意text/html，和application/html
-            response.getWriter().print("<html><body><script type='text/javascript'>alert('您要查询的数据为空！');</script></body></html>");
+            response.getWriter().print("<html><body><script type='text/javascript'>alert('您要查询的数据为空！');history.go(-1);</script></body></html>");
             response.getWriter().close();
             System.out.println("您要查询的数据为空！！");
             return;
         }
         if (!file.exists()) {
             response.setContentType("text/html; charset=UTF-8");//注意text/html，和application/html
-            response.getWriter().print("<html><body><script type='text/javascript'>alert('您要下载的资源已被删除！');</script></body></html>");
+            response.getWriter().print("<html><body><script type='text/javascript'>alert('您要下载的资源已被删除！');(history.go(-1));</script></body></html>");
             response.getWriter().close();
             System.out.println("您要下载的资源已被删除！！");
             return;

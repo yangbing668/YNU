@@ -37,24 +37,46 @@ public class SCISelectFilter {
         }
         return map;
     }
+    public ArrayList<String> getImportantJ(String file) {
+        ArrayList<String> importantJ = new ArrayList<>();
+        try {
+
+
+            FileInputStream in = new FileInputStream(file);
+            // 指定读取文件时以UTF-8的格式读取
+            BufferedReader bReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+
+            String line = bReader.readLine();
+            while (line!=null){
+                importantJ.add(line.replace("\n",""));
+                line = bReader.readLine();
+            }
+            bReader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return importantJ;
+    }
 
     public static void main(String[] args) {
+        System.out.println(111);
         SCISelectFilter filter = new SCISelectFilter();
         File dir = new File("");// 参数为空
         String storePath = null;
+
         try {
             storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
-            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\selected_folder\\";
+            String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\selected_folder\\";
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 //            System.out.println();// new Date()为获取当前系统时间
-            filter.filter(storePath,newPath +"SCIy"+".xls",storePath+"wos_dic.txt","Du, Lin","Zhao, QH", 2017, 2018);
+            filter.filter(storePath,newPath +"SCIy"+".xls",storePath+"wos_dic.txt","Liu,",null, 2013, 2013,true,0);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void filter(String sourcePath, String newFile,String dicFile,String author ,String correspondingAuthor, int startYear, int endYear) {
+    public void filter(String sourcePath, String newFile,String dicFile,String author ,String correspondingAuthor, int startYear, int endYear, boolean isSelectImportant,int level) {
         ArrayList<String> keywords = new ArrayList<>();
         for (int i = startYear; i <= endYear; i++) {
             keywords.add(String.valueOf(i));
@@ -70,8 +92,11 @@ public class SCISelectFilter {
                 bw.close();
                 return;
             }
+            ArrayList<String> important_j = getImportantJ(sourcePath+"\\important_j.txt");
+            //System.out.println("dd");
             for (File file : files) {
-                getSelect(file,datas,author,correspondingAuthor,first_authors,corresponding_authors);
+                // 	System.out.println("dd");
+                getSelect(file,datas,author,correspondingAuthor,first_authors,corresponding_authors, isSelectImportant,important_j, level);
             }
 
             HashMap<String, String> map = getChineseTitelNameMap(dicFile);
@@ -100,6 +125,7 @@ public class SCISelectFilter {
                 bw.write("\n");
             }
             bw.close();
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -107,14 +133,14 @@ public class SCISelectFilter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        // System.out.println("finish!");
     }
 
-    public void getSelect(File file, ArrayList<String[]> datas, String firstAuthor, String correspondingAuthor, ArrayList<String> first_authors, ArrayList<String> corresponding_authors) {
+    public void getSelect(File file, ArrayList<String[]> datas, String firstAuthor, String correspondingAuthor, ArrayList<String> first_authors, ArrayList<String> corresponding_authors, boolean isSelectImportant,ArrayList<String> importantJ, int level) {
         /* 读取数据 */
         try {
 //            File file = new File(rootPath+ time + ".csv");
-
+            //System.out.println("dd");
 
             FileInputStream in = new FileInputStream(file);
             // 指定读取文件时以UTF-8的格式读取
@@ -128,16 +154,19 @@ public class SCISelectFilter {
             String colmNames[] = line.split("\t");
             int C1_index = 0;
             int RP_index = 0;
+            int SO_index = 0;
 //            line = bReader.readLine();
             for (int i = 0; i < colmNames.length; i++) {
                 if (colmNames[i].equals("C1")) {
                     C1_index = i;
                 }else if (colmNames[i].equals("RP")){
                     RP_index = i;
+                }else if (colmNames[i].equals("SO")) {
+                    SO_index = i;
                 }
 
             }
-
+            //System.out.println(11);
             while ((line = bReader.readLine()) != null) {
 
                 /**
@@ -151,6 +180,20 @@ public class SCISelectFilter {
 
                 String author = author_college.split("; ")[0].replace("[", "");
                 String corresponding_author = datavalue[RP_index].split(" \\(")[0];
+                String publisher_name = datavalue[SO_index];
+                if(isSelectImportant) {
+                    boolean notImportant = true;
+                    // System.out.println("dd");
+                    for (String j : importantJ
+                    ) {
+                        if (j.equals(publisher_name)) {
+                            notImportant = false;
+                            break;
+                        }
+                        // System.out.println(j+"-----"+publisher_name);
+                    }
+                    if (notImportant) continue;
+                }
 //                System.out.println(author_college);
                 if(firstAuthor!=null)
                     if(!author.contains(firstAuthor)){
@@ -170,17 +213,40 @@ public class SCISelectFilter {
                     thisCollege_ = tCollege_[0].split("; ")[0];
                 }
 
-
-                if (thisCollege_.contains("Yunnan Univ,")||correspondingCollege.contains("Yunnan Univ,")||thisCollege_.contains("Yunnan University")||correspondingCollege.contains("Yunnan University")) {
-//                    if(!thisCollege_.contains("Yunnan Univ,"))
-//                    System.out.println(thisCollege_+"----------------"+correspondingCollege);
-//                    System.out.println(datavalue[RP_index].replace("\n",""));
-                    datas.add(datavalue);
-//                    System.out.println(thisCollege_);
-//                    thisCollege_.split("Univ, ")[1].split(", Kunming")[0]
-                    corresponding_authors.add(corresponding_author);
-                    first_authors.add(author);
+                if(level==0){
+                	if (thisCollege_.contains("Yunnan Univ,")||correspondingCollege.contains("Yunnan Univ,")||thisCollege_.contains("Yunnan University")||correspondingCollege.contains("Yunnan University")) {
+//                      if(!thisCollege_.contains("Yunnan Univ,"))
+//                      System.out.println(thisCollege_+"----------------"+correspondingCollege);
+//                      System.out.println(datavalue[RP_index].replace("\n",""));
+                      datas.add(datavalue);
+//                      System.out.println(thisCollege_);
+//                      thisCollege_.split("Univ, ")[1].split(", Kunming")[0]
+                      corresponding_authors.add(corresponding_author);
+                      first_authors.add(author);
+                  }
                 }
+                else if(level==1){
+                	if (thisCollege_.contains("Yunnan Univ,")||thisCollege_.contains("Yunnan University")) {
+                      datas.add(datavalue);
+                      corresponding_authors.add(corresponding_author);
+                      first_authors.add(author);
+                  }
+                }
+                else if(level==2){
+                	if (correspondingCollege.contains("Yunnan Univ,")||correspondingCollege.contains("Yunnan University")) {
+                      datas.add(datavalue);
+                      corresponding_authors.add(corresponding_author);
+                      first_authors.add(author);
+                  }
+                	}
+                else{
+                	if (author_college.contains("Yunnan Univ,")||author_college.contains("Yunnan University")) {
+                      datas.add(datavalue);
+                      corresponding_authors.add(corresponding_author);
+                      first_authors.add(author);
+                  }
+                }
+
             }
 
 

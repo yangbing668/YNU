@@ -25,7 +25,7 @@ public class getEi {
         String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos";
         String projectPath = dir.getCanonicalPath().replace("\\", "/");
         String pythonPath = projectPath+"/src/main/resources/python/wos/get_wos.py";
-        String[] arguments = new String[] {"python", pythonPath ,"2019","2019","SCI",storePath};
+        String[] arguments = new String[] {"python", pythonPath ,"2020","2020","SCI",storePath};
 
         try {
 
