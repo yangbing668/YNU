@@ -67,7 +67,7 @@ def exportfile(markfrom,markto,count,fromyear,art_type,path):
     browser.find_element_by_id("select2-saveOptions-container").click()
     browser.find_elements_by_class_name("select2-results__option")[6].click()
     browser.find_element_by_id("exportButton").click()
-    browser.find_element_by_link_text("关闭").click()
+    #browser.find_element_by_link_text("关闭").click()
     #等待文件下载完成
     while True:
         if os.path.exists(path+"\\savedrecs.txt"):
