@@ -9,7 +9,7 @@ import shutil
 
 parser = argparse.ArgumentParser(description='EI论文爬虫')
 parser.add_argument('--query_way', '-q', type=int, default=5)  # 按作者
-parser.add_argument('--date', '-d', type=int, default=2020)  # 爬取年份
+parser.add_argument('--date', '-d', type=int, default=2017)  # 爬取年份
 parser.add_argument('--search_word', '-s', default='yunnan university')
 parser.add_argument('--driver_path', '-p', default='D:\\chromedriver.exe')
 AccessKeyId = 'LTAI4Fs8Lq1zTsNWMCQ73LLy'
@@ -49,7 +49,7 @@ def download_ei(query_way, date, search_word, driver_path):
     if date != 0:
         start = date - 1883
         # print(start)
-        end = 2021-date
+        end = 2022-date
         # print(end)
         # 选择年份
         select_date = wb.find_element_by_xpath('//*[@id="date-tab"]')
