@@ -16,14 +16,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class TimerTask {
 	public static void main(String[] args) throws IOException, InterruptedException {
-//		TableHandler handler = new TableHandler();
-//		System.out.println("开始更新SCI数据!");
-//   	  	String[] fileNames = get_SciOrCpci("2016" , "2020", "SCI");
-//        for (int i = 0; i < fileNames.length; i++) {
-//            handler.getSections(fileNames[i],fileNames[i]);
-//        }
-//   	  	System.out.println("更新完成SCI数据");
-		get_Ei("2017");
+		TableHandler handler = new TableHandler();
+		System.out.println("开始更新SCI数据!");
+   	  	String[] fileNames = get_SciOrCpci("2020" , "2020", "SCI");
+        for (int i = 0; i < fileNames.length; i++) {
+            handler.getSections(fileNames[i],fileNames[i]);
+        }
+   	  	System.out.println("更新完成SCI数据");
+//		get_Ei("2019");
 		
 		
 	}

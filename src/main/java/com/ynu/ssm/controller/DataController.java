@@ -43,12 +43,14 @@ public class DataController {
 
         System.out.println(author);
         SCISelectFilter filter = new SCISelectFilter();
-        File dir = new File("C:\\Users\\Barry\\Desktop\\YNU\\trunk\\");// 参数为空
+        File dir = new File("");// 参数为空 C:\\Users\\Barry\\Desktop\\YNU\\trunk\\
+        String canonicalPath = dir.getCanonicalPath() + "\\YNU\\trunk";
+        System.out.println(canonicalPath);
         String storefile="";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         long time;
         time = System.currentTimeMillis();// new Date()为获取当前系统时间
-        String newPath =  dir.getCanonicalPath() + "\\src\\main\\resources\\python\\selected_folder\\";
+        String newPath =  canonicalPath + "\\src\\main\\resources\\python\\selected_folder\\";
         boolean isImportant_ = true;
         if (isImportant.equals("is")){
         	isImportant_=true;
@@ -58,7 +60,7 @@ public class DataController {
         }
         if (type.equals("SCI")){
             try {
-                String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\SCI\\";
+                String storePath = canonicalPath + "\\src\\main\\resources\\python\\wos\\SCI\\";
                 storefile=newPath + time +".xls";
                 if(level==0){
                     filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear,isImportant_, level);
@@ -83,7 +85,7 @@ public class DataController {
         }else if(type.equals("CPCI")){
             try {
 
-                String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\wos\\CPCI-S\\";
+                String storePath = canonicalPath + "\\src\\main\\resources\\python\\wos\\CPCI-S\\";
                 storefile=newPath + time +".xls";
                 if(level==0){
                     filter.filter(storePath,storefile,storePath+"wos_dic.txt",null,null,StartYear, EndYear,isImportant_, level);
@@ -108,10 +110,10 @@ public class DataController {
 
         }else {
             try {
-                String storePath = dir.getCanonicalPath() + "\\src\\main\\resources\\python\\ei\\";
+                String storePath = canonicalPath + "\\src\\main\\resources\\python\\ei\\";
                 UserSelect us =new UserSelect();
 //                System.out.println(level);
-                storefile=us.UserSelector(StartYear,EndYear,level,author,dir.getCanonicalPath());
+                storefile=us.UserSelector(StartYear,EndYear,level,author,canonicalPath);
                 int totalLines = -1;
                 try{
                     totalLines = getTotalLines(new File(storefile)) - 1;
